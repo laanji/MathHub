@@ -936,3 +936,130 @@ footer > span {
     transition: none !important;
   }
 }
+
+/* Wide desktop: use the available canvas without stretching reading lines. */
+@media (min-width: 1280px) {
+  .header {
+    max-width: 1648px;
+    width: calc(100% - 96px);
+    padding: 0;
+    height: 104px;
+  }
+  .hero,
+  .section,
+  footer {
+    max-width: 1648px;
+    width: calc(100% - 96px);
+  }
+  .hero {
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
+    gap: 24px;
+    margin-top: 12px;
+  }
+  .hero-copy {
+    padding: 40px clamp(36px, 3vw, 58px);
+  }
+  .hero h1 {
+    font-size: clamp(72px, 5vw, 92px);
+    line-height: 1.04;
+  }
+  .hero-badge,
+  .eyebrow {
+    font-size: 11px;
+  }
+  .header nav,
+  .header-cta {
+    font-size: 15px;
+  }
+  .small-note {
+    font-size: 15px;
+    margin-top: 24px;
+  }
+  .hero-description {
+    font-size: 18px;
+    line-height: 1.65;
+  }
+  .hero-actions {
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 26px;
+  }
+  .hero-actions .button {
+    font-size: 15px;
+    padding: 18px 24px;
+  }
+  .hero-proof {
+    font-size: 13px;
+    margin-top: 28px;
+  }
+  .test-card {
+    padding: 38px clamp(32px, 3vw, 54px) 28px;
+  }
+  .test-card h2 {
+    font-size: clamp(36px, 2.5vw, 46px);
+    margin-top: 26px;
+  }
+  .test-description {
+    font-size: 16px;
+  }
+  .tiny-pill,
+  .question span,
+  .test-footer {
+    font-size: 12px;
+  }
+  .question {
+    padding: 22px;
+  }
+  .question strong {
+    font-size: 38px;
+  }
+  .answers button {
+    min-height: 60px;
+    font-size: 22px;
+  }
+  .preview-feedback,
+  .preview-feedback p,
+  .text-button {
+    font-size: 14px;
+  }
+  .preview-feedback strong {
+    font-size: 15px;
+  }
+  .value-strip {
+    max-width: 1480px;
+    width: calc(100% - 144px);
+    margin: 28px auto 36px;
+  }
+  .value-strip p span {
+    font-size: 14px;
+  }
+  .value-strip strong {
+    font-size: 26px;
+  }
+  .section-heading > p,
+  .course p,
+  .course a,
+  .steps p,
+  .faq details p,
+  footer {
+    font-size: 15px;
+  }
+  .course p {
+    max-width: 360px;
+  }
+  .course h3 {
+    font-size: 28px;
+  }
+  .faq summary {
+    font-size: 18px;
+  }
+  .portal {
+    max-width: 1648px;
+    width: calc(100% - 96px);
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .portal .dashboard-grid {
+    grid-template-columns: minmax(320px, 0.8fr) minmax(0, 1.35fr);
+  }
+}
