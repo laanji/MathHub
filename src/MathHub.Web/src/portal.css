@@ -1,0 +1,616 @@
+/* Account screens reuse the landing palette and type scale. */
+.portal {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 54px 28px 88px;
+  min-height: 70vh;
+}
+.portal h1 {
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: 1.15;
+  letter-spacing: -2px;
+  margin: 14px 0 16px;
+}
+.portal h2 {
+  font-size: 29px;
+  line-height: 1.25;
+  letter-spacing: -1px;
+  margin: 18px 0;
+}
+.portal h3 {
+  font-size: 21px;
+  line-height: 1.35;
+  margin: 12px 0;
+}
+.portal p {
+  color: #66646c;
+  line-height: 1.7;
+}
+.portal .eyebrow {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.7px;
+  color: #68616a;
+}
+.panel {
+  background: white;
+  border: 1px solid #ece9ed;
+  border-radius: 26px;
+  padding: 30px;
+}
+.portal label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 750;
+  margin: 18px 0;
+}
+.portal input,
+.portal select,
+.portal textarea {
+  font: inherit;
+  font-weight: 500;
+  color: #141416;
+  border: 1px solid #ddd8e0;
+  background: #fff;
+  border-radius: 12px;
+  padding: 13px 14px;
+  min-width: 0;
+  width: 100%;
+  outline-offset: 3px;
+}
+.portal input:focus,
+.portal select:focus,
+.portal textarea:focus {
+  outline: 2px solid #ec4889;
+  border-color: transparent;
+}
+.portal textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+.portal small {
+  display: block;
+  font-size: 12px;
+  color: #78717d;
+  line-height: 1.65;
+  font-weight: 500;
+}
+.portal .checkbox {
+  flex-direction: row;
+  align-items: flex-start;
+  font-size: 12px;
+  color: #69636d;
+  line-height: 1.6;
+}
+.portal .checkbox input {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  accent-color: #ec4889;
+}
+.full {
+  width: 100%;
+  justify-content: center;
+}
+.button:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+  transform: none;
+}
+.portal .button {
+  font-size: 13px;
+  min-height: 44px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.button.secondary {
+  border: 1px solid #e4dde4;
+}
+.portal .error {
+  background: #fff0f0;
+  border: 1px solid #f5c1c1;
+  color: #a42838;
+  border-radius: 13px;
+  padding: 14px 18px;
+  line-height: 1.6;
+  font-size: 14px;
+}
+.error button {
+  background: none;
+  border: 0;
+  text-decoration: underline;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.portal .notice {
+  background: #edf9f3;
+  border: 1px solid #ccebdd;
+  color: #21634a;
+  border-radius: 15px;
+  padding: 18px;
+  line-height: 1.6;
+  font-size: 14px;
+}
+.notice p {
+  color: inherit;
+}
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #eee8ed;
+  margin: 26px 0;
+}
+.tabs a {
+  flex: 1;
+  text-align: center;
+  padding: 13px;
+  font-size: 14px;
+  color: #79717b;
+}
+.tabs .selected {
+  color: #d83378;
+  border-bottom: 3px solid #ec4889;
+  font-weight: 800;
+}
+.auth-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 70px;
+  align-items: start;
+  padding-top: 64px;
+}
+.auth-intro {
+  padding-top: 38px;
+}
+.auth-intro p {
+  max-width: 390px;
+}
+.auth-intro > a {
+  display: inline-block;
+  margin-top: 30px;
+  font-size: 13px;
+  font-weight: 750;
+}
+.auth-steps {
+  margin-top: 38px;
+}
+.auth-steps p {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+.auth-steps b {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: #fce8f0;
+  color: #b93168;
+  font-size: 12px;
+}
+.auth-form {
+  padding: 36px;
+}
+.auth-form h2 {
+  font-size: 30px;
+  margin-bottom: 6px;
+}
+.auth-form > p {
+  font-size: 13px;
+}
+.portal-header .brand {
+  flex-shrink: 0;
+}
+.portal-header .account-menu {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.account-menu > span {
+  max-width: 190px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 12px;
+}
+.dashboard-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 35px;
+}
+.dashboard-heading p {
+  margin-bottom: 0;
+}
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 0.8fr 1.35fr;
+  gap: 24px;
+  align-items: start;
+}
+.score-panel {
+  background: #eef8f3;
+  padding: 32px;
+}
+.score-number {
+  font-size: 88px;
+  letter-spacing: -5px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 22px 0 12px;
+  color: #146b50;
+}
+.score-number small {
+  display: inline;
+  font-size: 21px;
+  letter-spacing: -1px;
+  color: #72a28e;
+  margin-left: 8px;
+}
+.status {
+  display: inline-block;
+  padding: 7px 12px;
+  border-radius: 9px;
+  background: #fdf0f5;
+  color: #ad2c60;
+  font-size: 11px;
+  font-weight: 800;
+}
+.status.success {
+  background: #d9f0e5;
+  color: #136249;
+}
+.score-panel p {
+  font-size: 13px;
+}
+.portal .score-track {
+  height: 7px;
+  background: #d6e9e0;
+  border-radius: 8px;
+  margin: 24px 0 14px;
+  overflow: hidden;
+}
+.portal .score-track span {
+  display: block;
+  height: 100%;
+  background: #10b981;
+  border-radius: 8px;
+}
+.test-panel {
+  min-height: 410px;
+}
+.test-panel > p {
+  font-size: 14px;
+}
+.test-panel > .button {
+  margin: 16px 0;
+}
+.question-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 11px;
+  color: #78717d;
+  margin-top: 24px;
+}
+.test-panel progress {
+  width: 100%;
+  height: 6px;
+  accent-color: #ec4889;
+  margin: 10px 0;
+}
+.test-panel h2 {
+  font-size: 26px;
+  line-height: 1.5;
+}
+.portal .answers {
+  border: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.portal .answers label {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #e7e0e6;
+  border-radius: 13px;
+  padding: 14px;
+  margin: 0;
+  cursor: pointer;
+  font-size: 17px;
+}
+.portal .answers input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.portal .answers label:has(input:focus-visible) {
+  outline: 2px solid #ec4889;
+  outline-offset: 3px;
+}
+.portal .answers .chosen {
+  border-color: #ec4889;
+  background: #fdf2f6;
+}
+.answer-letter {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: #f4f1f4;
+  font-size: 11px;
+  color: #8b7c88;
+}
+.chosen .answer-letter {
+  background: #ec4889;
+  color: white;
+}
+.portal-section {
+  margin-top: 44px;
+  scroll-margin-top: 110px;
+}
+.portal-section > .section-heading {
+  align-items: center;
+}
+.portal-section > p {
+  max-width: 780px;
+  font-size: 14px;
+}
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 28px;
+}
+.catalog-card {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+}
+.catalog-card p {
+  font-size: 13px;
+  flex: 1;
+}
+.course-price {
+  font-size: 24px;
+  margin: 8px 0;
+}
+.course-price small {
+  display: inline;
+  font-size: 11px;
+}
+.catalog-card select {
+  font-size: 12px;
+}
+.enrollment-list {
+  display: grid;
+  gap: 16px;
+}
+.enrollment {
+  display: flex;
+  justify-content: space-between;
+  gap: 25px;
+}
+.enrollment p {
+  font-size: 13px;
+  margin: 6px 0;
+}
+.enrollment .muted {
+  color: #817983;
+  font-size: 12px;
+}
+.enrollment-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  max-width: 270px;
+  flex-shrink: 0;
+}
+.empty {
+  padding: 35px;
+  text-align: center;
+  background: #f6f4f7;
+  border: 1px dashed #dcd4df;
+  border-radius: 22px;
+}
+.empty > span {
+  font-size: 32px;
+  color: #c24477;
+}
+.empty p {
+  font-size: 14px;
+}
+.parent-confirm {
+  max-width: 620px;
+}
+.parent-confirm > .button {
+  margin-right: 12px;
+  margin-bottom: 12px;
+}
+.child-score strong {
+  color: #0b7c58;
+}
+.bank-list {
+  max-height: 900px;
+  overflow: auto;
+}
+.bank-list article {
+  padding: 20px 0;
+  border-bottom: 1px solid #eee;
+}
+.bank-list article h3 {
+  font-size: 17px;
+}
+.bank-list article p {
+  font-size: 13px;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+@media (max-width: 900px) {
+  .auth-layout {
+    gap: 30px;
+    grid-template-columns: 0.8fr 1fr;
+  }
+  .auth-form {
+    padding: 25px;
+  }
+  .dashboard-grid {
+    grid-template-columns: 1fr 1.3fr;
+  }
+  .panel {
+    padding: 24px;
+  }
+  .catalog-grid {
+    grid-template-columns: 1fr;
+  }
+  .catalog-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 25px;
+  }
+  .catalog-card .eyebrow,
+  .catalog-card h3,
+  .catalog-card p {
+    grid-column: 1;
+  }
+  .catalog-card label,
+  .catalog-card > .button {
+    grid-column: 2;
+  }
+  .catalog-card label {
+    grid-row: 2 / 4;
+  }
+  .catalog-card > .button {
+    grid-row: 4;
+  }
+  .enrollment {
+    flex-direction: column;
+  }
+  .enrollment-actions {
+    max-width: none;
+    align-items: flex-start;
+  }
+  .portal-header nav {
+    display: none;
+  }
+}
+@media (max-width: 650px) {
+  .portal {
+    padding: 30px 18px 55px;
+  }
+  .auth-layout,
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+  .auth-layout {
+    gap: 28px;
+  }
+  .auth-intro {
+    padding-top: 0;
+  }
+  .auth-intro h1 {
+    font-size: 34px;
+  }
+  .auth-intro .auth-steps,
+  .auth-intro > a {
+    display: none;
+  }
+  .auth-intro > p {
+    font-size: 13px;
+  }
+  .auth-form {
+    padding: 24px;
+  }
+  .portal-header .account-menu > span {
+    display: none;
+  }
+  .portal-header .button {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+  .portal-header .brand {
+    width: 140px;
+  }
+  .portal h1 {
+    font-size: 33px;
+    letter-spacing: -1px;
+  }
+  .dashboard-heading {
+    align-items: flex-start;
+  }
+  .dashboard-heading > .button {
+    font-size: 11px;
+    padding: 10px;
+    white-space: nowrap;
+  }
+  .score-panel {
+    padding: 25px;
+  }
+  .score-number {
+    font-size: 70px;
+    margin: 14px 0;
+  }
+  .test-panel h2 {
+    font-size: 22px;
+  }
+  .panel {
+    border-radius: 20px;
+  }
+  .catalog-card {
+    display: flex;
+  }
+  .answers {
+    gap: 10px;
+  }
+  .answers label {
+    padding: 12px;
+    font-size: 15px;
+  }
+  .portal-section .section-heading {
+    gap: 15px;
+    align-items: flex-start;
+  }
+  .portal-section h2 {
+    font-size: 26px;
+  }
+  .enrollment-actions .button {
+    width: 100%;
+    justify-content: center;
+  }
+  .enrollment-actions {
+    align-items: stretch;
+  }
+  .portal-header {
+    gap: 10px;
+  }
+  .question-meta {
+    font-size: 10px;
+  }
+  .parent-confirm .button {
+    width: 100%;
+  }
+  .portal footer {
+    font-size: 12px;
+  }
+}

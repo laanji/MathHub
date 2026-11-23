@@ -19,6 +19,12 @@ public sealed class CohortGroup
         if (courseId == Guid.Empty || string.IsNullOrWhiteSpace(ageCohort)) throw new BusinessRuleException("group.invalid", "Потрібні курс і вікова когорта.");
         CourseId = courseId; AgeCohort = ageCohort; CreatedAt = now;
     }
+    public static CohortGroup Restore(Guid id, Guid courseId, string ageCohort, DateTimeOffset createdAt, int deltaLimit, bool archived, IEnumerable<Enrollment> enrollments)
+    {
+        var group = new CohortGroup(courseId, ageCohort, createdAt) { Id = id, DeltaLimit = deltaLimit, IsArchived = archived };
+        group._enrollments.AddRange(enrollments);
+        return group;
+    }
     public int OccupiedSeats(DateTimeOffset now) => _enrollments.Count(e => e.OccupiesSeat(now));
     public int SpreadWith(int score, DateTimeOffset now)
     {

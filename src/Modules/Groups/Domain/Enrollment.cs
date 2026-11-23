@@ -11,6 +11,8 @@ public sealed class Enrollment
     private Enrollment() { }
     internal Enrollment(Guid studentId, int score, decimal price, DateTimeOffset now)
     { StudentId = studentId; ScoreAtEntry = score; PriceSnapshot = price; ReservedUntil = now.AddMinutes(15); }
+    public static Enrollment Restore(Guid id, Guid studentId, int score, decimal price, DateTimeOffset reservedUntil, EnrollmentStatus status)
+        => new() { Id = id, StudentId = studentId, ScoreAtEntry = score, PriceSnapshot = price, ReservedUntil = reservedUntil, Status = status };
     public bool OccupiesSeat(DateTimeOffset now) => Status == EnrollmentStatus.Active || Status == EnrollmentStatus.Reserved && ReservedUntil > now;
     internal void Activate() => Status = EnrollmentStatus.Active;
     internal void Leave() => Status = EnrollmentStatus.Left;

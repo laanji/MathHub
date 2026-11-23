@@ -5,7 +5,7 @@ public sealed record TestAnswer(Guid QuestionId, int QuestionVersion, double Dif
 public sealed class TestSession
 {
     private readonly List<TestAnswer> _answers = [];
-    public Guid Id { get; } = Guid.NewGuid();
+    public Guid Id { get; private set; } = Guid.NewGuid();
     public Guid StudentId { get; }
     public double Theta { get; private set; }
     public TestStatus Status { get; private set; } = TestStatus.InProgress;
@@ -17,6 +17,12 @@ public sealed class TestSession
         if (studentId == Guid.Empty || !double.IsFinite(initialTheta) || initialTheta is < 0 or > 100)
             throw new BusinessRuleException("assessment.session", "Некоректні параметри сесії.");
         StudentId = studentId; Theta = initialTheta;
+    }
+    public static TestSession Restore(Guid id, Guid studentId, double theta, TestStatus status, IEnumerable<TestAnswer> answers)
+    {
+        var session = new TestSession(studentId, theta) { Id = id, Status = status };
+        session._answers.AddRange(answers);
+        return session;
     }
     public TestAnswer Submit(Guid questionId, int questionVersion, double difficulty, bool correct, Guid requestId, int expectedVersion, IScoringEngine engine)
     {

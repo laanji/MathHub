@@ -38,7 +38,7 @@ export function PreviewCard() {
       <p className="test-description">
         Одна задача — перший крок.
         <br />
-        Повний тест визначатиме ваш MathScore.
+        Повна діагностика доступна в кабінеті.
       </p>
       <div className="question">
         <span>Знайдіть значення x</span>

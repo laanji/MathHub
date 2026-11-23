@@ -1,6 +1,6 @@
 using MathHub.Modules.Groups.Domain;
 namespace MathHub.Modules.Groups.Application;
-/// <summary>Lock, read and mutate inside one PostgreSQL transaction. Implementation belongs to Lab 5.</summary>
+/// <summary>Lock, read and mutate inside one PostgreSQL transaction.</summary>
 public interface IGroupRepository
 {
     Task<CohortGroup?> GetForUpdateAsync(Guid groupId, CancellationToken cancellationToken);
