@@ -11,8 +11,10 @@ import { EnrollmentCards } from "./EnrollmentCards";
 export function StudentDashboard({
   account,
   onAccount,
+  groupsOnly = false,
 }: {
   account: Account;
+  groupsOnly?: boolean;
   onAccount: (a: Account) => void;
 }) {
   const [test, setTest] = useState<Test | null>(null);
@@ -152,7 +154,9 @@ export function StudentDashboard({
         <div>
           <span className="eyebrow">ОСОБИСТИЙ КАБІНЕТ</span>
           <h1>
-            Привіт, {account.displayName.split(" ")[0]}
+            {groupsOnly
+              ? "Групи та мої записи"
+              : "Привіт, " + account.displayName.split(" ")[0]}
             <span className="pink-period">.</span>
           </h1>
           <p>Ваш рівень. Ваш розклад. Ваш наступний крок.</p>
@@ -175,150 +179,173 @@ export function StudentDashboard({
         <p role="status">Завантажуємо ваш кабінет…</p>
       ) : (
         <>
-          <div className="dashboard-grid">
-            <section className="panel score-panel">
-              <span className="eyebrow">МІЙ MATHSCORE</span>
-              <div className="score-number">
-                {account.mathScore ?? "—"}
-                <small>/100</small>
-              </div>
-              <span className="status success">
-                {account.rank
-                  ? account.rank + " " + account.subRank
-                  : "Рівень ще не визначено"}
-              </span>
+          {groupsOnly && (
+            <section className="panel">
+              <h2>Як приєднатися до мінігрупи</h2>
               <p>
-                {account.mathScore === null
-                  ? "Пройдіть діагностику, щоб отримати свій стартовий бал і підібрати групу."
-                  : "Результат збережено у вашому акаунті. Для груп використовуємо бал, зафіксований під час запису."}
+                Пройдіть діагностику, оберіть курс і розклад нижче, зарезервуйте
+                місце та підтвердьте його тестовою оплатою. Група підбирається
+                автоматично за віком і MathScore; чужі профілі не показуємо.
               </p>
-              <div className="score-track">
-                <span style={{ width: (account.mathScore ?? 0) + "%" }} />
+              <div className="page-actions">
+                <a className="button secondary" href="#/account">
+                  Діагностика в кабінеті
+                </a>
+                <a className="button secondary" href="#/payments">
+                  Оплата та квитанції
+                </a>
               </div>
-              <small>
-                Повторна діагностика — через 30 днів після завершення.
-              </small>
             </section>
-            <section className="panel test-panel" id="diagnostic">
-              <span className="eyebrow">ДІАГНОСТИКА · 15–20 ЗАВДАНЬ</span>
-              {test?.status === "InProgress" && test.question ? (
-                <>
-                  <div className="question-meta">
-                    <span>
-                      Завдання {test.version + 1} / до {test.maximumQuestions}
-                    </span>
-                    <span>{test.question.topic}</span>
-                  </div>
-                  <progress
-                    value={test.version}
-                    max={20}
-                    aria-label="Прогрес діагностики"
-                  />
-                  <h2>{test.question.text}</h2>
-                  <fieldset disabled={busy} className="answers">
-                    <legend className="sr-only">Оберіть відповідь</legend>
-                    {test.question.options.map((o, i) => (
-                      <label className={answer === o ? "chosen" : ""} key={o}>
-                        <input
-                          type="radio"
-                          name="answer"
-                          value={o}
-                          checked={answer === o}
-                          onChange={() => setAnswer(o)}
-                        />
-                        <span className="answer-letter">
-                          {String.fromCharCode(65 + i)}
-                        </span>
-                        {o}
-                      </label>
-                    ))}
-                  </fieldset>
-                  <button
-                    className="button primary"
-                    disabled={!answer || busy}
-                    onClick={submit}
-                  >
-                    {busy ? "Зберігаємо…" : "Підтвердити відповідь →"}
-                  </button>
-                  <small>
-                    Відповіді зберігаються після кожного кроку. Можна закрити
-                    сторінку й продовжити пізніше.
-                  </small>
-                </>
-              ) : test?.result ? (
-                <>
-                  <span className="status success">
-                    Діагностику завершено ✓
-                  </span>
-                  <h2>Ваш старт — {test.result.mathScore} балів</h2>
-                  <p>
-                    {test.result.rank} {test.result.subRank} · правильних
-                    відповідей {test.result.correct} із {test.result.total}.
-                  </p>
-                  <p>
-                    MathScore враховує складність завдань, а не лише відсоток
-                    правильних відповідей.
-                  </p>
-                  <button
-                    className="button primary"
-                    onClick={() =>
-                      document
-                        .getElementById("catalog")
-                        ?.scrollIntoView({ behavior: "smooth" })
-                    }
-                  >
-                    Обрати курс →
-                  </button>
-                  <small>
-                    Завершено{" "}
-                    {new Date(test.result.completedAt).toLocaleString("uk-UA")}.
-                  </small>
-                </>
-              ) : (
-                <>
-                  <h2>
-                    Знайдемо вашу
-                    <br />
-                    точку старту
-                  </h2>
-                  <p>
-                    Оберіть контекст, який відповідає вашій навчальній цілі.
-                    Складність завдань підлаштовуватиметься за відповідями.
-                  </p>
-                  {test?.status === "InsufficientData" && (
-                    <p className="error">
-                      Банк завдань вичерпано. Результат не зараховано; можна
-                      почати нову діагностику.
-                    </p>
-                  )}
-                  <label>
-                    Навчальний контекст
-                    <select
-                      value={context}
-                      onChange={(e) => setContext(e.target.value)}
-                    >
-                      {contexts.map((c) => (
-                        <option value={c.id} key={c.id}>
-                          {c.name}
-                        </option>
+          )}
+          {!groupsOnly && (
+            <div className="dashboard-grid">
+              <section className="panel score-panel">
+                <span className="eyebrow">МІЙ MATHSCORE</span>
+                <div className="score-number">
+                  {account.mathScore ?? "—"}
+                  <small>/100</small>
+                </div>
+                <span className="status success">
+                  {account.rank
+                    ? account.rank + " " + account.subRank
+                    : "Рівень ще не визначено"}
+                </span>
+                <p>
+                  {account.mathScore === null
+                    ? "Пройдіть діагностику, щоб отримати свій стартовий бал і підібрати групу."
+                    : "Результат збережено у вашому акаунті. Для груп використовуємо бал, зафіксований під час запису."}
+                </p>
+                <div className="score-track">
+                  <span style={{ width: (account.mathScore ?? 0) + "%" }} />
+                </div>
+                <small>
+                  Повторна діагностика — через 30 днів після завершення.
+                </small>
+              </section>
+              <section className="panel test-panel" id="diagnostic">
+                <span className="eyebrow">ДІАГНОСТИКА · 15–20 ЗАВДАНЬ</span>
+                {test?.status === "InProgress" && test.question ? (
+                  <>
+                    <div className="question-meta">
+                      <span>
+                        Завдання {test.version + 1} / до {test.maximumQuestions}
+                      </span>
+                      <span>{test.question.topic}</span>
+                    </div>
+                    <progress
+                      value={test.version}
+                      max={20}
+                      aria-label="Прогрес діагностики"
+                    />
+                    <h2>{test.question.text}</h2>
+                    <fieldset disabled={busy} className="answers">
+                      <legend className="sr-only">Оберіть відповідь</legend>
+                      {test.question.options.map((o, i) => (
+                        <label className={answer === o ? "chosen" : ""} key={o}>
+                          <input
+                            type="radio"
+                            name="answer"
+                            value={o}
+                            checked={answer === o}
+                            onChange={() => setAnswer(o)}
+                          />
+                          <span className="answer-letter">
+                            {String.fromCharCode(65 + i)}
+                          </span>
+                          {o}
+                        </label>
                       ))}
-                    </select>
-                  </label>
-                  <button
-                    className="button primary"
-                    onClick={start}
-                    disabled={busy}
-                  >
-                    Почати діагностику ↗
-                  </button>
-                  <small>
-                    Це діагностичний орієнтир для підбору груп, а не шкільна
-                    оцінка.
-                  </small>
-                </>
-              )}
-            </section>
-          </div>
+                    </fieldset>
+                    <button
+                      className="button primary"
+                      disabled={!answer || busy}
+                      onClick={submit}
+                    >
+                      {busy ? "Зберігаємо…" : "Підтвердити відповідь →"}
+                    </button>
+                    <small>
+                      Відповіді зберігаються після кожного кроку. Можна закрити
+                      сторінку й продовжити пізніше.
+                    </small>
+                  </>
+                ) : test?.result ? (
+                  <>
+                    <span className="status success">
+                      Діагностику завершено ✓
+                    </span>
+                    <h2>Ваш старт — {test.result.mathScore} балів</h2>
+                    <p>
+                      {test.result.rank} {test.result.subRank} · правильних
+                      відповідей {test.result.correct} із {test.result.total}.
+                    </p>
+                    <p>
+                      MathScore враховує складність завдань, а не лише відсоток
+                      правильних відповідей.
+                    </p>
+                    <button
+                      className="button primary"
+                      onClick={() =>
+                        document
+                          .getElementById("catalog")
+                          ?.scrollIntoView({ behavior: "smooth" })
+                      }
+                    >
+                      Обрати курс →
+                    </button>
+                    <small>
+                      Завершено{" "}
+                      {new Date(test.result.completedAt).toLocaleString(
+                        "uk-UA",
+                      )}
+                      .
+                    </small>
+                  </>
+                ) : (
+                  <>
+                    <h2>
+                      Знайдемо вашу
+                      <br />
+                      точку старту
+                    </h2>
+                    <p>
+                      Оберіть контекст, який відповідає вашій навчальній цілі.
+                      Складність завдань підлаштовуватиметься за відповідями.
+                    </p>
+                    {test?.status === "InsufficientData" && (
+                      <p className="error">
+                        Банк завдань вичерпано. Результат не зараховано; можна
+                        почати нову діагностику.
+                      </p>
+                    )}
+                    <label>
+                      Навчальний контекст
+                      <select
+                        value={context}
+                        onChange={(e) => setContext(e.target.value)}
+                      >
+                        {contexts.map((c) => (
+                          <option value={c.id} key={c.id}>
+                            {c.name}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <button
+                      className="button primary"
+                      onClick={start}
+                      disabled={busy}
+                    >
+                      Почати діагностику ↗
+                    </button>
+                    <small>
+                      Це діагностичний орієнтир для підбору груп, а не шкільна
+                      оцінка.
+                    </small>
+                  </>
+                )}
+              </section>
+            </div>
+          )}
           <section className="portal-section" id="my-enrollments">
             <div className="section-heading">
               <div>
@@ -387,7 +414,10 @@ export function StudentDashboard({
                       enrollments.some(
                         (e) =>
                           e.courseId === c.id &&
-                          ["Active", "Reserved"].includes(e.status),
+                          (e.status === "Active" ||
+                            (e.status === "Reserved" &&
+                              new Date(e.reservedUntil).getTime() >
+                                Date.now())),
                       )
                     }
                     onClick={() => reserve(c)}

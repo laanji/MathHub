@@ -80,6 +80,28 @@ public sealed class AnswerRow
     public int Number { get; set; }
     public string ResponseJson { get; set; } = "{}";
 }
+public sealed class TeacherRow
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public string DisplayName { get; set; } = "";
+    public string Subject { get; set; } = "";
+    public string Bio { get; set; } = "";
+    public string PhotoPath { get; set; } = "";
+    public bool IsPlaceholder { get; set; } = true;
+}
+public sealed class DemoCheckoutRow
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid UserId { get; set; }
+    public Guid CourseId { get; set; }
+    public Guid RequestId { get; set; }
+    public string CourseTitle { get; set; } = "";
+    public decimal Amount { get; set; }
+    public string Scenario { get; set; } = "success";
+    public string Status { get; set; } = "Succeeded";
+    public string GatewayReference { get; set; } = "";
+    public DateTimeOffset CreatedAt { get; set; }
+}
 public sealed class CourseRow
 {
     public Guid Id { get; set; } = Guid.NewGuid();

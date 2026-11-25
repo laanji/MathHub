@@ -61,7 +61,7 @@ if (Directory.Exists(webPath))
     app.UseStaticFiles(new StaticFileOptions { FileProvider = files });
 }
 app.MapGet("/health", async (MathHubDbContext db, CancellationToken ct) => await db.Database.CanConnectAsync(ct) ? Results.Ok(new { status = "healthy", database = "PostgreSQL" }) : Results.StatusCode(503));
-app.MapAssessmentPreview(); app.MapMvp();
+app.MapAssessmentPreview(); app.MapMvp(); app.MapCatalog();
 app.MapGet("/api/config", () => new { developmentMailbox = app.Environment.IsDevelopment(), paymentsMode = "mock" });
 if (app.Environment.IsDevelopment()) app.MapDevelopmentMailbox();
 await using (var scope = app.Services.CreateAsyncScope())

@@ -35,6 +35,17 @@ public static class SeedData
             var slots = JsonSerializer.Serialize(new[] { "Вівторок і четвер · 18:00", "Понеділок і середа · 19:00", "Субота · 11:00" });
             db.Courses.AddRange(new CourseRow { Title = "Впевнена база", Description = "Числа, дроби та відсотки: розуміння замість заучування.", Context = "elementary", PricePerLesson = 250, SlotsJson = slots }, new CourseRow { Title = "Алгебра без прогалин", Description = "Рівняння, функції та впевненість у власних знаннях.", Context = "intermediate", PricePerLesson = 300, SlotsJson = slots }, new CourseRow { Title = "Підготовка до НМТ", Description = "Практика й системний рух до вашого результату.", Context = "proficient", PricePerLesson = 350, SlotsJson = slots });
         }
+        // Only pending seed profiles are updated; edited biographies are preserved.
+        foreach (var profile in new[] {
+            new TeacherRow { Id = Guid.Parse("813b10fe-8415-4cdf-bf56-94340d06b101"), DisplayName = "Друченко Олексій Сергійович", Subject = "Математика", Bio = "Студент 3-го курсу ФІОТ КПІ, спеціальність 126 — Інформаційні системи та технології.", PhotoPath = "/teachers/oleksii.jpg", IsPlaceholder = false },
+            new TeacherRow { Id = Guid.Parse("813b10fe-8415-4cdf-bf56-94340d06b102"), DisplayName = "Гриценко Марина Миколаївна", Subject = "Математика", Bio = "Студентка 2-го курсу ФІОТ КПІ, спеціальність 121 — Інженерія програмного забезпечення. Результат НМТ — 200 балів. Пів року досвіду навчання дітей.", PhotoPath = "/teachers/maryna.jpg", IsPlaceholder = false } }) {
+            var existing = await db.Teachers.SingleOrDefaultAsync(t => t.Id == profile.Id, ct);
+            if (existing is null) db.Teachers.Add(profile);
+            else if (existing.IsPlaceholder || existing.PhotoPath == "") {
+                existing.DisplayName = profile.DisplayName; existing.Subject = profile.Subject; existing.Bio = profile.Bio;
+                existing.PhotoPath = profile.PhotoPath; existing.IsPlaceholder = false;
+            }
+        }
         await db.SaveChangesAsync(ct); await tx.CommitAsync(ct);
     }
 }

@@ -15,6 +15,8 @@ public sealed class MathHubDbContext(DbContextOptions<MathHubDbContext> options)
     public DbSet<EnrollmentRow> Enrollments => Set<EnrollmentRow>();
     public DbSet<PaymentRow> Payments => Set<PaymentRow>();
     public DbSet<ReceiptRow> Receipts => Set<ReceiptRow>();
+    public DbSet<TeacherRow> Teachers => Set<TeacherRow>();
+    public DbSet<DemoCheckoutRow> DemoCheckouts => Set<DemoCheckoutRow>();
     protected override void OnModelCreating(ModelBuilder b)
     {
         b.Entity<AccountRow>().ToTable("users", "identity", t => t.HasCheckConstraint("ck_users_score", "math_score BETWEEN 0 AND 100"));
@@ -64,6 +66,13 @@ public sealed class MathHubDbContext(DbContextOptions<MathHubDbContext> options)
         b.Entity<ReceiptRow>().ToTable("request_receipts", "platform");
         b.Entity<ReceiptRow>().Property(x => x.ResponseJson).HasColumnType("jsonb");
         b.Entity<ReceiptRow>().HasIndex(x => new { x.StudentId, x.Scope, x.RequestId }).IsUnique();
+        b.Entity<TeacherRow>().ToTable("teachers", "learning");
+        b.Entity<TeacherRow>().Property(x => x.DisplayName).HasMaxLength(100);
+        b.Entity<DemoCheckoutRow>().ToTable("demo_checkouts", "billing", t => t.HasCheckConstraint("ck_demo_amount", "amount > 0"));
+        b.Entity<DemoCheckoutRow>().Property(x => x.Amount).HasPrecision(12, 2);
+        b.Entity<DemoCheckoutRow>().HasIndex(x => new { x.UserId, x.RequestId }).IsUnique();
+        b.Entity<DemoCheckoutRow>().HasOne<AccountRow>().WithMany().HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Restrict);
+        b.Entity<DemoCheckoutRow>().HasOne<CourseRow>().WithMany().HasForeignKey(x => x.CourseId).OnDelete(DeleteBehavior.Restrict);
         foreach (var entity in b.Model.GetEntityTypes())
             foreach (var property in entity.GetProperties())
                 property.SetColumnName(Regex.Replace(property.Name, "([a-z0-9])([A-Z])", "$1_$2").ToLowerInvariant());

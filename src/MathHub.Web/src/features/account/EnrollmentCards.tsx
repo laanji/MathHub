@@ -8,7 +8,7 @@ const status: Record<string, string> = {
 };
 const state: Record<string, string> = {
   Forming: "Група формується",
-  Open: "Можна починати навчання",
+  Open: "Група готова до старту",
   ClosedFull: "Група укомплектована",
   Archived: "Група архівна",
 };
@@ -43,6 +43,9 @@ export function EnrollmentCards({
               {status[e.status] ?? e.status}
             </span>
             <h3>{e.courseTitle}</h3>
+            <p className="muted">
+              Група №{e.groupId.slice(0, 8)} · запис №{e.id.slice(0, 8)}
+            </p>
             <p>{e.slot}</p>
             <p className="muted">
               {state[e.groupState]} · підтверджено {e.activeCount}/5 · зайнято з

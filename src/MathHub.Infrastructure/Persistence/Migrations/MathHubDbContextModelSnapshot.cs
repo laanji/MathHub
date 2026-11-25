@@ -222,6 +222,67 @@ namespace MathHub.Infrastructure.Persistence.Migrations
                         });
                 });
 
+            modelBuilder.Entity("MathHub.Infrastructure.Persistence.DemoCheckoutRow", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(12, 2)
+                        .HasColumnType("numeric(12,2)")
+                        .HasColumnName("amount");
+
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("course_id");
+
+                    b.Property<string>("CourseTitle")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("course_title");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("GatewayReference")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("gateway_reference");
+
+                    b.Property<Guid>("RequestId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("request_id");
+
+                    b.Property<string>("Scenario")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("scenario");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("UserId", "RequestId")
+                        .IsUnique();
+
+                    b.ToTable("demo_checkouts", "billing", t =>
+                        {
+                            t.HasCheckConstraint("ck_demo_amount", "amount > 0");
+                        });
+                });
+
             modelBuilder.Entity("MathHub.Infrastructure.Persistence.EnrollmentRow", b =>
                 {
                     b.Property<Guid>("Id")
@@ -546,6 +607,43 @@ namespace MathHub.Infrastructure.Persistence.Migrations
                     b.ToTable("refresh_tokens", "identity");
                 });
 
+            modelBuilder.Entity("MathHub.Infrastructure.Persistence.TeacherRow", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Bio")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("bio");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("display_name");
+
+                    b.Property<bool>("IsPlaceholder")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_placeholder");
+
+                    b.Property<string>("PhotoPath")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("photo_path");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("subject");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("teachers", "learning");
+                });
+
             modelBuilder.Entity("MathHub.Infrastructure.Persistence.TestRow", b =>
                 {
                     b.Property<Guid>("Id")
@@ -619,6 +717,21 @@ namespace MathHub.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("MathHub.Infrastructure.Persistence.AuthSessionRow", b =>
                 {
+                    b.HasOne("MathHub.Infrastructure.Persistence.AccountRow", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MathHub.Infrastructure.Persistence.DemoCheckoutRow", b =>
+                {
+                    b.HasOne("MathHub.Infrastructure.Persistence.CourseRow", null)
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("MathHub.Infrastructure.Persistence.AccountRow", null)
                         .WithMany()
                         .HasForeignKey("UserId")

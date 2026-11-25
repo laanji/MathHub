@@ -47,8 +47,17 @@ export function Landing() {
           className={menu ? "open" : ""}
           aria-label="Головна навігація"
         >
-          <a href="#courses" onClick={() => setMenu(false)}>
-            Напрями
+          <a href="#/courses" onClick={() => setMenu(false)}>
+            Курси
+          </a>
+          <a href="#/teachers" onClick={() => setMenu(false)}>
+            Наші викладачі
+          </a>
+          <a href="#/groups" onClick={() => setMenu(false)}>
+            Групи та записи
+          </a>
+          <a href="#/payments" onClick={() => setMenu(false)}>
+            Оплата
           </a>
           <a href="#approach" onClick={() => setMenu(false)}>
             Як це працює
@@ -87,7 +96,7 @@ export function Landing() {
               <a className="button primary" href="#/account">
                 Визначити свій рівень <span>↗</span>
               </a>
-              <a className="button secondary" href="#courses">
+              <a className="button secondary" href="#/courses">
                 Обрати напрям <span>→</span>
               </a>
             </div>

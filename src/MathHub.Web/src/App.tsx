@@ -7,6 +7,12 @@ import { StudentDashboard } from "./features/account/StudentDashboard";
 import { ParentDashboard } from "./features/account/ParentDashboard";
 import { AdminBank } from "./features/account/AdminBank";
 import "./portal.css";
+import {
+  CoursesPage,
+  TeachersPage,
+  PaymentsPage,
+  SignInPrompt,
+} from "./features/catalog/CatalogPages";
 export function App() {
   const [route, setRoute] = useState(location.hash);
   const [account, setAccount] = useState<Account | null>(null);
@@ -31,6 +37,7 @@ export function App() {
     location.hash = "/login";
   }
   if (!route.startsWith("#/")) return <Landing />;
+  const page = route.split("?")[0];
   const register = route === "#/register";
   const authRoute = register || route === "#/login";
   return (
@@ -41,6 +48,30 @@ export function App() {
         </a>
         <nav>
           <a href="#">Головна</a>
+          <a
+            href="#/courses"
+            aria-current={page === "#/courses" ? "page" : undefined}
+          >
+            Курси
+          </a>
+          <a
+            href="#/teachers"
+            aria-current={page === "#/teachers" ? "page" : undefined}
+          >
+            Наші викладачі
+          </a>
+          <a
+            href="#/groups"
+            aria-current={page === "#/groups" ? "page" : undefined}
+          >
+            Групи та записи
+          </a>
+          <a
+            href="#/payments"
+            aria-current={page === "#/payments" ? "page" : undefined}
+          >
+            Оплата
+          </a>
           {account && <a href="#/account">Мій кабінет</a>}
         </nav>
         {account ? (
@@ -64,10 +95,20 @@ export function App() {
           </a>
         )}
       </header>
-      {!ready ? (
+      {page === "#/courses" ? (
+        <CoursesPage />
+      ) : page === "#/teachers" ? (
+        <TeachersPage />
+      ) : !ready ? (
         <main className="portal">
           <p role="status">Перевіряємо сесію…</p>
         </main>
+      ) : (page === "#/groups" || page === "#/payments") && !account ? (
+        <SignInPrompt
+          title={page === "#/groups" ? "Групи та мої записи" : "Оплата"}
+        />
+      ) : page === "#/payments" && account ? (
+        <PaymentsPage account={account} />
       ) : authRoute || !account ? (
         <AuthPage
           key={register ? "register" : "login"}
@@ -75,7 +116,12 @@ export function App() {
           onSignedIn={setAccount}
         />
       ) : account.role === "Student" ? (
-        <StudentDashboard account={account} onAccount={setAccount} />
+        <StudentDashboard
+          key={page}
+          account={account}
+          onAccount={setAccount}
+          groupsOnly={page === "#/groups"}
+        />
       ) : account.role === "Parent" ? (
         <ParentDashboard account={account} />
       ) : (
